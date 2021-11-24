@@ -1,12 +1,19 @@
 class PostsController < ApplicationController
 
   def index
-    @posts = Post.all
+    if params[:author_id]
+      #params[:author_id] coming from? Rails provides it for us through the nested route,
+      #The conditional hinges on whether there's an :author_id key in the params hash — in other words, whether the user navigated to /authors/:id/posts 
+      @posts = Author.find(params[:author_id]).posts
+      #accccounts for the new nest urls, so see if the user is tryting to access all pots or all post form a particular author
+    else
+      @posts = Post.all
+    end
   end
 
   def show
     @post = Post.find(params[:id])
-  end
+  end 
 
   def new
     @post = Post.new
